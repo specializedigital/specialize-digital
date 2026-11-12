@@ -218,7 +218,6 @@ html:not(.js) .preloader { display: none; }
   margin-bottom: clamp(28px, 4vw, 48px);
 }
 .eyebrow .mono { color: var(--y); }
-.eyebrow__line { width: 56px; height: 1px; background: var(--y); transform-origin: left; }
 
 /* ---------- Split text ---------- */
 .word { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
@@ -284,20 +283,12 @@ html:not(.js) .hero__stage { position: relative; }
   letter-spacing: -0.035em;
   margin-bottom: 28px;
 }
-.hl { color: var(--y); position: relative; display: inline-block; }
-.hero__title .hl::after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: 0.04em; height: 0.08em;
-  background: var(--y); border-radius: 4px;
-  transform: scaleX(var(--ul, 0)); transform-origin: left;
-  box-shadow: 0 0 24px var(--y-glow);
-}
+.hl { color: var(--y); }
 .hero__lead { font-size: clamp(15px, 1.15vw, 17px); color: var(--muted); max-width: 520px !important; margin-bottom: 22px; }
 .hero__kicker {
-  display: flex; align-items: center; gap: 14px;
   font-weight: 600; font-size: clamp(15px, 1.15vw, 17px); color: var(--w);
   margin-bottom: 36px;
 }
-.hero__kicker .dash { width: 32px; height: 2px; background: var(--y); flex: none; }
 .hero__scroll {
   position: absolute; left: 50%; bottom: 28px; z-index: 3;
   transform: translateX(-50%);

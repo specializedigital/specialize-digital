@@ -108,7 +108,6 @@
     $$(".ads-panel__bars span").forEach((b) => b.style.setProperty("--s", 1));
     $$(".journey__step").forEach((s) => s.classList.add("is-on"));
     $(".journey__line i")?.style.setProperty("--p", 1);
-    $(".hero__title .hl")?.style.setProperty("--ul", 1);
     $(".hero__name")?.remove();
     finishLoading();
     return;
@@ -310,7 +309,6 @@
       .to(".hero__logo", { clipPath: "inset(0 0% 0 0)", duration: 0.35, ease: "power3.inOut" }, 0.62)
       .add(() => $(".hero__logo .shine").classList.add("is-on"), 0.87)
       .to(heroWords, { yPercent: 0, rotate: 0, duration: 0.35, stagger: 0.02 }, 0.72)
-      .to(".hero__title .hl", { "--ul": 1, duration: 0.2 }, 1.04)
       .to("[data-hero-fade]", { y: 0, opacity: 1, duration: 0.3, stagger: 0.07 }, 0.92)
       .to(nav, { autoAlpha: 1, duration: 0.25 }, 1.02)
       .to({}, { duration: 0.25 });
