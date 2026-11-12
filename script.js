@@ -178,7 +178,7 @@
       let dest = target;
       if (id === "#showreel") {
         const pin = ScrollTrigger.getAll().find((s) => s.trigger === $(".reel__stage") && s.pin);
-        dest = pin ? pin.end : $(".reel__stage");
+        dest = pin ? pin.end : target; /* no celular para no título "Assista ao showreel" */
       }
       if (lenis) lenis.scrollTo(dest, { duration: 1.8, easing: (t) => 1 - Math.pow(1 - t, 4) });
       else if (typeof dest === "number") window.scrollTo({ top: dest, behavior: "smooth" });
