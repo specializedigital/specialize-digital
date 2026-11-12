@@ -46,13 +46,23 @@
 
   /* ---------- Vídeos: tocam só quando aparecem ---------- */
   const autoVideos = $$("video[data-autoplay]");
-  /* Computador bom recebe a versão HD (1080p); celular e aparelho fraco, a versão leve (720p) */
+  /* HD (1080p) só nos vídeos grandes dos cartões de serviço, em computador bom.
+     Os vídeos do trilho de trabalho são pequenos na tela: usam sempre a versão leve (720p). */
   const useHD = !lite && matchMedia("(min-width: 901px)").matches;
-  if (useHD) autoVideos.forEach((v) => { v.src = v.getAttribute("src").replace(/\.mp4$/, "-hd.mp4"); });
-  const io = new IntersectionObserver((entries) => {
+  if (useHD) $$(".card__visual video[data-autoplay]").forEach((v) => { v.src = v.getAttribute("src").replace(/\.mp4$/, "-hd.mp4"); });
+
+  /* 1) começa a carregar um pouco antes de aparecer, para não engasgar ao entrar na tela */
+  const warm = new IntersectionObserver((entries) => {
     entries.forEach(({ target: v, isIntersecting }) => {
-      if (isIntersecting) {
-        if (v.preload !== "auto") v.preload = "auto";
+      if (isIntersecting && v.preload !== "auto") { v.preload = "auto"; v.load(); }
+    });
+  }, { rootMargin: "400px 700px" });
+  /* 2) só toca quando boa parte do vídeo está visível; fora disso, pausa (menos vídeos ao mesmo tempo) */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(({ target: v, intersectionRatio }) => {
+      /* no trilho, vídeos cortados nas bordas ficam pausados: no máximo ~3 tocando juntos */
+      const need = v.closest(".tile") ? 0.6 : 0.35;
+      if (intersectionRatio >= need) {
         const p = v.play();
         p && p.catch(() => {});
         v.closest(".tile")?.classList.add("is-playing");
@@ -61,8 +71,8 @@
         v.closest(".tile")?.classList.remove("is-playing");
       }
     });
-  }, { rootMargin: "150px 150px" });
-  if (!reduce) autoVideos.forEach((v) => io.observe(v));
+  }, { threshold: [0, 0.35, 0.6] });
+  if (!reduce) autoVideos.forEach((v) => { warm.observe(v); io.observe(v); });
 
   /* ---------- Showreel: som e play ---------- */
   const reel = $(".reel");
@@ -491,14 +501,6 @@
         pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1,
         onUpdate: (self) => gsap.set(progressBar, { scaleX: self.progress }),
       },
-    });
-    if (!lite) tiles.forEach((tile) => {
-      const v = $("video", tile);
-      if (!v) return;
-      gsap.fromTo(v, { xPercent: -6 }, {
-        xPercent: 6, ease: "none",
-        scrollTrigger: { trigger: tile, containerAnimation: hTween, start: "left right", end: "right left", scrub: true },
-      });
     });
     gsap.from(tiles, {
       yPercent: 30, opacity: 0, rotate: 2, duration: 1.4, stagger: 0.08,
