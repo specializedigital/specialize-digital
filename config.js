@@ -6,7 +6,7 @@
   mensagem: texto que já vem escrito quando a pessoa abre o WhatsApp.
 */
 window.SPECIALIZE = {
-  whatsapp: "",
+  whatsapp: "558197394237",
   instagram: "https://www.instagram.com/specializedigital/",
-  mensagem: "Olá! Vim pelo site e quero crescer com a Specialize Digital."
+  mensagem: "Olá! Quero fazer minha empresa crescer com a Specialize Digital! 🚀"
 };

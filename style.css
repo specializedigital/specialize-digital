@@ -748,3 +748,18 @@ html:not(.js) .hero__stage { position: relative; }
   .reel__mhead .h2 { font-size: clamp(30px, 8vw, 52px); }
   .reel__mhead p { color: var(--muted); max-width: 30ch; font-size: 15px; }
 }
+
+/* Contato: WhatsApp e Instagram lado a lado */
+.contact__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.btn--ghost { background: transparent; color: var(--w); border: 1px solid var(--line-2); }
+.btn--ghost .btn__icon { background: rgba(255, 255, 255, 0.08); color: var(--w); }
+@media (hover: hover) {
+  .btn--ghost:hover { border-color: var(--y); color: var(--y); }
+  .btn--ghost:hover .btn__icon { color: var(--y); }
+}
+@media (max-width: 520px) {
+  .contact__actions { flex-direction: column; align-items: stretch; width: 100%; max-width: 360px; }
+  .contact__actions .btn { justify-content: center; }
+}
+.btn--ig { font-size: 16px; }
+@media (max-width: 520px) { .contact__actions .btn--wa, .contact__actions .btn--ig { font-size: 14px; } }
