@@ -763,3 +763,27 @@ html:not(.js) .hero__stage { position: relative; }
 }
 .btn--ig { font-size: 16px; }
 @media (max-width: 520px) { .contact__actions .btn--wa, .contact__actions .btn--ig { font-size: 14px; } }
+
+/* Rodapé: e-mail e cidade bem discretos */
+.footer__info { display: grid; gap: 2px; font-size: 12px; color: var(--dim); }
+.footer__info a { color: var(--dim); transition: color 0.3s; }
+@media (hover: hover) { .footer__info a:hover { color: var(--y); } }
+
+/* Celular: logo e botões menores; chamada do showreel centralizada */
+@media (max-width: 900px) {
+  .nav { padding-top: 14px; padding-bottom: 14px; }
+  .nav__logo img { height: 22px; }
+  .btn--small { --pad-y: 9px; --pad-x: 14px; font-size: 11px; }
+  .hero__logo { width: min(230px, 60vw); }
+  .reel__cta { justify-items: center; text-align: center; }
+  .reel__title { margin-left: auto; margin-right: auto; }
+  .reel__copy { justify-items: center; max-width: 34ch; margin: 0 auto; }
+}
+@media (max-width: 520px) {
+  .btn--big { --pad-y: 14px; --pad-x: 20px; font-size: 12px; }
+  .btn__icon { width: 28px; height: 28px; }
+  .btn__icon svg { width: 15px; height: 15px; }
+  .hero__cta .btn { width: auto; justify-content: center; }
+  .contact__actions .btn--wa { font-size: 13px; }
+  .contact__actions { flex-direction: row; justify-content: center; width: auto; }
+}

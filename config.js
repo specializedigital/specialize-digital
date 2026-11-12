@@ -8,5 +8,5 @@
 window.SPECIALIZE = {
   whatsapp: "558197394237",
   instagram: "https://www.instagram.com/specializedigital/",
-  mensagem: "Olá! Quero fazer minha empresa crescer com a Specialize Digital! 🚀"
+  mensagem: "Olá! Quero fazer minha empresa crescer com a Specialize Digital!"
 };
