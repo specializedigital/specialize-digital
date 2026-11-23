@@ -250,16 +250,42 @@
   gsap.set(".hero__name-logo", { clipPath: "inset(0 100% 0 0)" });
   gsap.set(nav, { autoAlpha: 0 });
 
-  gsap.timeline()
-    .to(".preloader__logo", { clipPath: "inset(0 0% 0 0)", duration: 1.3, ease: "expo.inOut" })
-    .add(() => $(".preloader__logo .shine").classList.add("is-on"), "-=0.25");
+  /* Entrada: toca o vídeo da logo; se o aparelho bloquear o vídeo, mostra a logo fixa como antes */
+  const introVideo = $(".preloader__video");
+  const logoIntro = () =>
+    gsap.timeline()
+      .to(".preloader__logo", { clipPath: "inset(0 0% 0 0)", duration: 1.3, ease: "expo.inOut" })
+      .add(() => $(".preloader__logo .shine").classList.add("is-on"), "-=0.25");
+  const introReady = new Promise((resolve) => {
+    if (!introVideo) { logoIntro(); setTimeout(resolve, 1700); return; }
+    let started = false, gaveUp = false;
+    const useLogo = () => {
+      if (started || gaveUp) return;
+      gaveUp = true;
+      introVideo.remove();
+      logoIntro();
+      setTimeout(resolve, 1700);
+    };
+    introVideo.addEventListener("playing", () => {
+      if (gaveUp || started) return;
+      started = true;
+      preloader.classList.add("has-video");
+      gsap.to(introVideo, { opacity: 1, duration: 0.25 });
+      setTimeout(resolve, ((introVideo.duration || 5.1) + 0.6) * 1000); /* segurança caso "ended" não dispare */
+    });
+    introVideo.addEventListener("ended", () => started && resolve(), { once: true });
+    introVideo.addEventListener("error", useLogo, { once: true });
+    const p = introVideo.play();
+    p && p.catch(useLogo);
+    setTimeout(() => { if (!started) useLogo(); }, 2500);
+  });
 
   const heroImg = $(".hero__media-inner img");
   const waitFor = (p, ms) => Promise.race([p, new Promise((r) => setTimeout(r, ms))]);
   Promise.all([
     waitFor(document.fonts ? document.fonts.ready : Promise.resolve(), 3000),
     waitFor(heroImg.decode ? heroImg.decode().catch(() => {}) : Promise.resolve(), 5000),
-    new Promise((r) => setTimeout(r, 1700)),
+    introReady,
   ]).then(exitPreloader);
 
   /* No celular a abertura é um esmaecer suave; no computador as cortinas se abrem */
@@ -273,13 +299,14 @@
         ScrollTrigger.refresh();
       },
     });
+    const introEl = preloader && preloader.classList.contains("has-video") ? introVideo : ".preloader__logo";
     if (smallScreen) {
       gsap.set(".hero__name-logo", { clipPath: "none", opacity: 0, scale: 0.94 });
-      tl.to(".preloader__logo", { opacity: 0, scale: 0.96, duration: 0.45, ease: "power2.in" })
+      tl.to(introEl, { opacity: 0, scale: 0.96, duration: 0.45, ease: "power2.in" })
         .to(".preloader", { opacity: 0, duration: 0.9, ease: "power2.out" }, "-=0.05")
         .add(heroIntro(true), "<");
     } else {
-      tl.to(".preloader__logo", { scale: 1.08, opacity: 0, duration: 0.7, ease: "power3.in" })
+      tl.to(introEl, { scale: 1.08, opacity: 0, duration: 0.7, ease: "power3.in" })
         .to(".preloader__panel--top", { yPercent: -100, duration: 1.3, ease: "expo.inOut" }, "-=0.3")
         .to(".preloader__panel--bottom", { yPercent: 100, duration: 1.3, ease: "expo.inOut" }, "<")
         .add(heroIntro(false), "<0.1");

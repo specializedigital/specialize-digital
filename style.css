@@ -787,3 +787,13 @@ html:not(.js) .hero__stage { position: relative; }
   .contact__actions .btn--wa { font-size: 13px; }
   .contact__actions { flex-direction: row; justify-content: center; width: auto; }
 }
+
+/* Entrada em vídeo na tela de carregamento (a logo fixa fica de reserva) */
+.preloader__video {
+  position: absolute; left: 50%; top: 50%; z-index: 1;
+  translate: -50% -50%;
+  width: min(1200px, 100vw); height: auto;
+  opacity: 0; pointer-events: none;
+}
+@media (max-width: 700px) { .preloader__video { width: 125vw; } }
+.preloader.has-video .preloader__inner { display: none; }
