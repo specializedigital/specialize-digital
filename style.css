@@ -797,3 +797,10 @@ html:not(.js) .hero__stage { position: relative; }
 }
 @media (max-width: 700px) { .preloader__video { width: 125vw; } }
 .preloader.has-video .preloader__inner { display: none; }
+
+/* Hero: título em duas frases, um pouco maior */
+.hero__line { display: block; }
+.hero__content > .hero__title { max-width: min(760px, 54vw); font-size: clamp(38px, 4.3vw, 68px); }
+@media (max-width: 900px) {
+  .hero__content > .hero__title { max-width: 640px; font-size: clamp(32px, 9vw, 46px); }
+}
